@@ -1,0 +1,15 @@
+django-configurations>=0.4
+Django>=1.7,<1.8
+dj-database-url==0.3.0
+django-debug-toolbar>=1.2.1,<2.0
+django_compressor==1.4
+python-memcached==1.53
+django-extensions==1.4.9
+
+python-social-auth>=0.2.0,<0.3.0
+Pillow
+beautifulsoup4
+requests
+python-dateutil
+mandrill
+djrill

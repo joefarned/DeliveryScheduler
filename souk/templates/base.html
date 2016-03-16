@@ -1,0 +1,81 @@
+{% load compress %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reciproxity &mdash; {% block title %}Home{% endblock title %}</title>
+    <link rel="stylesheet" href="/static/css/foundation.css" />
+    <script src="/static/js/vendor/modernizr.js"></script>
+    {% block css %}{% endblock css %}
+</head>
+<body>
+
+    <nav class="top-bar" data-topbar role="navigation">
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="/">Reciproxity</a></h1>
+            </li>
+            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                {% if user.is_authenticated %}
+                <li><a href="/balance">Balance: ${{user.profile.first.balance}}</a></li>
+                {% if user.profile.first.balance < 10 %}
+                    <li><a href="/balance">Recharge Balance</a></li>
+                {% endif %}
+                <li class="has-dropdown">
+                    <a href="#">Hello {{user.first_name}}</a>
+                    <ul class="dropdown">
+                        <li><a href="mailto:admin@pavawith.me">Contact us</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="/login">Login</a></li>
+                {% endif %}
+            </ul>
+            <!-- Left Nav Section -->
+            {% if user.is_authenticated %}<ul class="left">
+                <li><a href="/search">Search</a></li>
+                <li><a href="/craigslist">Craigslist</a></li>
+                <li><a href="/me">My Items</a></li>
+                <li><a href="/requests">Requests</a></li>
+                <li><a href="/borrowed">Borrowed Items</a></li>
+            </ul>{% endif %}
+        </section>
+    </nav>
+
+    {% block content %}{% endblock content %}
+
+    <footer class="row">
+        <div class="large-12 columns">
+            <hr/>
+            <div class="row">
+                <div class="large-8 columns">
+                    <p>&copy; Copyright 2014 <a href="http://rohunbansal.com/">Rohun Bansal</a>, Joe Farned, Michael Gromis.</p>
+                </div>
+                <!--<div class="large-4 columns">
+                    <ul class="inline-list right">
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Use</a></li>
+                    </ul>
+                </div>-->
+            </div>
+        </div>
+    </footer>
+
+    {% compress js %}
+    <script src="/static/js/vendor/jquery.js"></script>
+    <script src="/static/js/foundation.min.js"></script>
+    {% endcompress %}
+    <script>
+        $(document).foundation();
+    </script>
+
+    {% block js %}{% endblock js %}
+</body>
+</html>

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div data-alert class="alert-box secondary" style="margin:0">
+<h2>Pending Requests</h2>
+</div>
+<br>
+
+<div id="items">
+{% for req in requests %}
+<div class="row item">
+    <div class="small-12 large-3 columns text-center" style="padding-bottom: 15px">
+        {% if req.item.picture %}<img src="/media/{{req.item.filename}}">{% else %}<img src="/static/img/placeholder.png" style="height: 200px">{% endif %}
+    </div>
+    <div class="small-4 large-5 columns">
+        <h4>{{req.item.name}}</h4>
+        <p>{{req.item.desc}}</p>
+    </div>
+    <div class="small-6 large-4 columns">
+        <b>Owner:</b> {{req.item.owner.first_name}} {{req.item.owner.last_name}}
+        <hr>
+
+        {% if req.accepted and not req.in_progress %}
+            Waiting for mutually-acceptable pickup window
+        {% elif req.in_progress%}
+            <h5>Postmate in Progress</h5>
+            <p>
+                <b>Cost of Delivery</b>: ${% widthratio req.cost_delivery 1000 10 %} (paid by borrower)<br>
+                {% if not req.pickup_estimate and req.delivery_estimate %}
+                    <b>Picked up</b></br>
+                {% else %}<b>Pickup estimate</b>: {{req.pickup_estimate}}<br>{% endif %}
+                <b>Delivery estimate</b>: {{req.delivery_estimate}}
+            </p>
+        {% else %}
+        <h5>Options</h5>
+        <p>
+            <a href='#' class="button success expand">Cancel</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+<hr>
+{% endfor %}
+</div>
+
+<div data-alert class="alert-box secondary" style="margin:0">
+<h2>Borrowed Items</h2>
+</div>
+<br>
+
+<div id="items">
+{% for item in borrowed %}
+<div class="row item">
+    <div class="small-12 large-3 columns text-center" style="padding-bottom: 15px">
+        {% if item.picture %}<img src="/media/{{item.filename}}">{% else %}<img src="/static/img/placeholder.png" style="height: 200px">{% endif %}
+    </div>
+    <div class="small-4 large-5 columns">
+        <h4>{{item.name}}</h4>
+        <p>{{item.desc}}</p>
+    </div>
+    <div class="small-6 large-4 columns">
+        <b>Owner:</b> {{item.owner.first_name}} {{item.owner.last_name}}
+        <hr>
+        <h5>Options</h5>
+        <p>
+            <a href='/return/{{item.id}}/' class="button success expand">Return</a>
+        </p>
+    </div>
+</div>
+<hr>
+{% endfor %}
+</div>
+
+
+<div data-alert class="alert-box success" style="margin:0">
+<h2>Payment Due</h2>
+
+Currently, to cover Postmate charges, please pay ${{owed}}.
+
+<p>
+<form action="/payment/new" method="POST">
+<!-- We're using the latest v3 API here -->
+<script
+src="https://checkout.stripe.com/v3/checkout.js" class="stripe-button"
+data-key="pk_test_Nei7IV3TO9Go2ValDrQtXyjW"
+data-amount="{{owed_full}}"
+data-name="Payment Charges"
+data-description="Delivery Fee (${{owed}})"
+data-currency="usd"
+data-image="/static/img/placeholder.png">
+</script>
+</form>
+</p>
+</div>
+
+
+
+
+{% endblock content %}

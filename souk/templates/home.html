@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+<img src="/static/img/front.png">
+</div>
+<div data-alert class="alert-box secondary row">
+    <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="button" style="width:100%">Login with Facebook</a>
+</div>
+
+<div class="row">
+<p>Reciproxity drives efficient exchanges on Craigslist by employing Postmates to deliver items between buyers and sellers. To order an item, users only need to paste the craigslist url into the interface, which instantly links the buyer and seller through email, using Mandrill.</p>
+
+<p>Separately, Reciproxity lets users create a lending library of goods for friends to borrow from. When an item is requested, Postmates synchronizes the delivery. When Nest determines both users are home, Reciproxity initiates delivery. Users login with Facebook and track their friends’ lending libraries.</p>
+</div>
+{% endblock content %}

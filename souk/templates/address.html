@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div data-alert class="alert-box secondary" style="margin:0">
+    <p>In order to know where to send your items, please enter your address and phone number</p>
+</div>
+<br>
+
+<div class="row">
+    <form method="post" action="/address/">
+    {% csrf_token %}
+        <p>
+            <b>Address:</b>
+            <textarea name="address"></textarea>
+        </p>
+
+        <p><b>Phone Number</b>: <input type="text" name="phone_number" placeholder="ex 212 555 5555"></p>
+
+        <button type="submit">Continue</button>
+    </form>
+</div>
+
+<div data-alert class="alert-box secondary" style="margin:0">
+    <h1>Nest</h1>
+
+    <a href="/nest" target="_blank">Connect your Nest</a>
+</div>
+{% endblock content %}

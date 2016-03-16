@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if success %}
+<div data-alert class="alert-box success" style="margin:0">
+  Item added
+  <a href="#" class="close">&times;</a>
+</div>
+{% endif %}
+
+<div data-alert class="alert-box secondary" style="margin:0">
+<h2>My Items</h2>
+</div>
+
+<div data-alert class="alert-box secondary">
+    <h3 class="text-center">Add a item</h3>
+    <hr>
+
+    <form action="/items/new" method="post" id="new-account" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="large-4 columns">
+                <label>Item Name
+                    <input type="text" placeholder="Item Name" name="name" id="name">
+                </label>
+            </div>
+            <div class="large-5 columns">
+                <label>Item Description
+                    <textarea type="text" placeholder="Item Description" name="desc" id="desc"></textarea>
+                </label>
+            </div>
+            <div class="large-3 columns">
+                <label>Item Picture
+                    <input type="file" placeholder="Item Picture" name="picture" id="id_picture">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-8 columns">
+                Your items will only be shared with your facebook friends. You will be asked before items are queued for delivery.
+            </div>
+            <div class="large-4 columns clearfix">
+                <input type="submit" href="#" class="button radius right" value="Add Item">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% for item in items %}
+<div class="row item">
+    <div class="small-12 large-3 columns text-center" style="padding-bottom: 15px">
+        {% if item.picture %}<img src="/media/{{item.filename}}">{% else %}<img src="/static/img/placeholder.png" style="height: 200px">{% endif %}
+    </div>
+    <div class="small-4 large-5 columns">
+        <h4>{{item.name}}</h4>
+        <p>{{item.desc}}</p>
+    </div>
+    <div class="small-6 large-4 columns">
+        <p><b>Owner:</b> {{item.owner.first_name}} {{item.owner.last_name}}</p>
+        <p><b>Possessor:</b> {{item.possessor.first_name}} {{item.possessor.last_name}} {% if item.possessor == user %} (You){% endif %}</p>
+        <hr>
+        <h5>Options</h5>
+        <p>
+            <a href='#' class="button tiny expand">Delete</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://reciproxity.me" target="_blank">Share on Facebook</a> or <a href="https://twitter.com/home?status=http://reciproxity.me" target="_blank">Share on Twitter</a>
+        </p>
+    </div>
+</div>
+<hr>
+{% endfor %}
+{% endblock content %}

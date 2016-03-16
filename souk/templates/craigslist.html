@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div data-alert class="alert-box secondary"style="margin:0">
+	<h3 class="text-center">Enter Craigslist URL</h3>
+
+	<form action="/craigslist/submit/" method="post">
+	{% csrf_token %}
+	<input type="text" placeholder="Enter Craigslist URL" name="url">
+
+	<textarea rows="4" cols="50" name="email_body">Email Body</textarea>
+
+	<button type="submit">Submit</button>
+	</form>
+</div>
+
+<div data-alert class="alert-box primary" style="margin:0">
+<h2>Active Responses</h2>
+</div>
+<br>
+
+<center><a href="#" id="show-completed">Toggle Showing Completed</a></center>
+
+{% for post in posts %}
+<div class="row item{% if post.request_set.count %} completed" style="background: #AFA{% endif %}">
+    {% if post.request_set.first %}
+        <div data-alert class="alert-box success" style="margin:0">
+        Request Completed!
+        </div>
+    {% endif %}
+
+    <div class="large-12 columns">
+        <h4>{{post.title}}</h4>
+        <p><a href="{{post.url}}" target="_blank">{{post.url}}</a></p>
+
+        {% for msg in post.message_set.all %}
+            {% if msg.from_us %}
+                <b>From You:</b><br>
+                {% else %}
+                <b>From Them:</b><br>
+            {% endif %}
+            {{msg}}
+            <hr>
+        {% endfor %}
+
+        <form action="/craigslist/submit/{{post.id}}/" method="post">
+        {% csrf_token %}
+        <textarea rows="4" cols="50" name="email_body">Email Body</textarea>
+
+        <input id="send_link" name="send_link" type="checkbox"><label for="send_link">Send confirmation link to Craigslist Poster (will be withdrawn from your balance)</label>
+
+        <div class="row collapse prefix-radius">
+                <div class="small-1 columns">
+                  <span class="prefix">$</span>
+                </div>
+                <div class="small-11 columns">
+                  <input type="text" placeholder="Agreed-upon price" name="price">
+                </div>
+              </div>
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}
+
+{% block js %}
+<script>
+$('.completed').hide()
+$('#show-completed').click(function(event){
+    event.preventDefault();
+    $('.completed').toggle()
+})
+</script>
+{% endblock js %}

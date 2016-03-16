@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div data-alert class="alert-box success" style="margin:0">
+<h2>Balance: ${{user.profile.first.balance}}</h2>
+
+Top up your balance with <input id="balance_add">
+
+<p>
+<form action="/payment/new" method="POST">
+<!-- We're using the latest v3 API here -->
+<script
+src="https://checkout.stripe.com/v3/checkout.js" class="stripe-button"
+data-key="pk_test_Nei7IV3TO9Go2ValDrQtXyjW"
+data-amount="{{owed_full}}"
+data-name="Payment Charges"
+data-description="Delivery Fee"
+data-currency="usd"
+data-image="/static/img/placeholder.png">
+</script>
+</form>
+
+<a href='#' class="button tiny secondary" id="topup">Top-up</a>
+</p>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+$("#topup").click(function(event){
+    event.preventDefault();
+    // $('.stripe-button').data('amount') = $('#balance_add').val() * 100;
+    window.location = '/me?topup=' + $('#balance_add').val()
+})
+</script>
+{% endblock js %}

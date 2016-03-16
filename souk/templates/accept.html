@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div data-alert class="alert-box secondary" style="margin:0">
+<h2>Accepting Offer for "{{post.title}}"</h2>
+</div>
+<br>
+
+<div class="row">
+Agreed-upon account of <b>${{post.price}}</b>
+
+<form action="/accept/{{post.id}}/{{hash}}/done" method="post"><br>
+{% csrf_token %}
+<b>Address:</b> <textarea name="address"></textarea>
+<p>Your address will not be availalbe to the reciproxity user to protect your privacy</p>
+
+<h4>Payment Method</h4>
+<p>We have escrowed the requested funds from the buyer and will hold them until Postmates has confirmed delivery. At that time, we will disburse payment to your preferred payment solution:</p>
+
+<input type="radio" name="payment" value="Red" id="paymentRed"><label for="paymentRed">PayPal</label>
+<input type="radio" name="payment" value="Blue" id="paymentBlue"><label for="paymentBlue">Stripe</label>
+<input type="radio" name="payment" value="Green" id="paymentGreen"><label for="paymentGreen">Bitcoin</label><br>
+
+<button type="submit">Submit &amp; Accept</button>
+</form>
+
+</div>
+
+{% endblock content %}
